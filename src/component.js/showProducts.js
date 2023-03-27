@@ -1,28 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
 import { BrowserRouter as Router, Routes, Route, Link, Switch } from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
-import {addCart} from '../redux/action'
+import {addCart} from '../redux/reducer/addcart'
 
 
 function Showproducts() {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const [cart,cartDetails] = useState([])
   const dispatch = useDispatch();
+  
+  const addCartDetails = useSelector((state) => state.addcart);
+  console.log("addCartDetails--",addCartDetails.cartDetails);
+  const [cart, setCart] = useState([]);
+
+  const handleClick = (item) => {
+   
+  };
+ 
   const addProducts  = (product)=>{
-    console.log("dinesh-----",product)
-    dispatch(addCart(product));
+    console.log("addProducts----",product);
+    if (cart.indexOf(product) !== -1) return;
+    setCart([...cart, product]);
+   
+   
+    dispatch(addCart(product)).then((response)=>{
+      console.log("response--",response.payload);
+      
+    });
+    
   }
+
+  console.log("cart--",cart);
+
+  
   let componentMounted = true
 
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true)
       const response = await axios.get(`https://fakestoreapi.com/products/${id}`);
-      console.log("response-------id", response);
+       
       if (componentMounted) {
         setProduct(response.data);
         setLoading(false)
@@ -57,7 +79,7 @@ function Showproducts() {
   }
 
   function Singleproducts(product) {
-    console.log("items--", product.data)
+    
     return (
      <>
      <div className='col-md-6'>
@@ -76,7 +98,7 @@ function Showproducts() {
 
        <p className='lead'>{product.data.description}</p>
        <button className='btn btn-outline-dark' onClick={()=>addProducts(product.data)}>Add to Cart</button>
-       <button className='btn btn-dark ms-2 px-3 py-2'><Link to={`/cart`}>Go to Cart</Link></button>
+       <button className='btn btn-dark ms-2 px-3 py-2'><Link to={`/products`}>Go to Cart</Link></button>
 
      </div>
      </> 
@@ -85,12 +107,13 @@ function Showproducts() {
 
   }
 
-  console.log("product---", product)
+ 
 
   return (
     <div>
       <div className='container py-5'>
         <div className='row py-5'>
+         
           {loading ? <Loading /> : <Singleproducts data={product} />}
 
         </div>

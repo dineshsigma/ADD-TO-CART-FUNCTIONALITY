@@ -12,14 +12,16 @@ import Container from 'react-bootstrap/Container';
 
 
 
-//import Showproducts from './showProducts';
+
 
 
 function Products() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState(data);
-    const [search, setSearch] = useState();
+    const [search, setSearch] = useState({
+        "search":""
+    });
     let componentMounted = true
 
     useEffect(() => {
@@ -80,7 +82,7 @@ function Products() {
                                         <Card.Body>
                                             <Card.Title>{products.title.substring(0, 100)}</Card.Title>
                                             <Card.Text>$:{products.price}</Card.Text>
-                                            <button className='btn btn-outline-dark'><Link to={`/products/${products.id}`}>Buy</Link></button>
+                                            <button className='btn btn-outline-dark' ><Link to={`/products/${products.id}`}>Buy</Link></button>
                                         </Card.Body>
                                     </Card>
                                 </Col>
@@ -102,36 +104,26 @@ function Products() {
 
     let searchhandleChange = (e) => {
         e.preventDefault();
-        console.log(e.target.value);
-        setSearch(e.target.value);
-        console.log("search---",search);
+        setSearch({ ...search, [e.target.name]: e.target.value });
        
-        function filterIt(arr, searchKey) {
-            console.log("searchKey",searchKey,arr)
-            // return arr.filter(function(obj) {
-            //     console.log("obj----",obj);
-            //   return Object.keys(obj).some(function(key) {
-            //     return obj[key].includes(searchKey);
-            //   })
-            // });
-          }
-
-        filterIt(data,search)
-
+       
         
-        
-
+       
     }
 
-     console.log("data----", data);
+    
+
+
+   
+    
+    
     return (
         <div classNameName='container my-5 py-5'>
             <div classNameName='row'>
                 <div classNameName='col-12 mb-5'>
                     <h1 classNameName='display-6 fw-bolder text-center'>Latest Products</h1>
                     <input
-                        type="text"
-                        placeholder="Search here" onChange={searchhandleChange} value={search}
+                        placeholder="Search here" onChange={searchhandleChange} value={search.search} name="search"
                     />
                     <hr />
 
