@@ -3,7 +3,8 @@ import Home from './component.js/Home.js';
 import Products from './component.js/products';
 import Showproducts from './component.js/showProducts';
 import NavbarDashboard from './dashboard/navbar';
-import Profile from './profile/form'
+import Profile from './profile/userDetails';
+import SignUpInfo from './profile/signinfo';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {useState,useRef,useEffect} from 'react';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/products/:id" element={<Showproducts />} />
         <Route path="/dashboard/" element={<NavbarDashboard />} />
         <Route path="/dashboard/profile" element={<Profile />} />
+        <Route path="/dashboard/signup" element={<SignUpInfo />} />
       </Routes>
 
 

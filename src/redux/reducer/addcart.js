@@ -5,19 +5,27 @@ export const addCart = createAsyncThunk('product/addcart', async (payload,thunkA
   
    return payload;
   })
+
+ export const userpersonalDetails= createAsyncThunk('/sign',async (payload,thunkAPI)=>{
+     return payload
+ })
  
   export const addCartSlice = createSlice({
       name:'addcart',
       initialState:{
-          cartDetails:[]
+          cartDetails:[],
+          userDetails:""
  
       },
       extraReducers:{
           [addCart.fulfilled]:(state,action)=>{
-              
               state.cartDetails=action.payload
-            //  state.cartDetails = 
-          }
+          },
+          [userpersonalDetails.fulfilled]:(state,action)=>{
+              console.log("action------",action.payload);
+            state.userDetails=action.payload
+        },
+
       }
   })
  
